@@ -3,175 +3,240 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Awahouse MVP</title>
+    <title>Awahouse | Verified Lagos Homes</title>
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
-    <header class="topbar">
+    <header class="appbar">
       <a class="brand" href="#explore" aria-label="Awahouse home">
         <span class="brand-mark">A</span>
-        <span>
+        <span class="brand-copy">
           <strong>Awahouse</strong>
-          <small>Verified homes in Lagos</small>
+          <small>Verified marketplace</small>
         </span>
       </a>
-      <nav class="nav" aria-label="Primary">
+      <nav class="desktop-nav" aria-label="Primary">
         <a href="#explore">Explore</a>
-        <a href="#ask">Ask Awa</a>
-        <a href="#list">List</a>
-        <a href="#dashboard">Dashboard</a>
+        <a href="#property">Trust file</a>
+        <a href="#escrow">Escrow</a>
+        <a href="#list-property">List</a>
+        <a href="#dashboard">Agent Hub</a>
       </nav>
-      <div class="role-switcher">
-        <label for="roleSelect">Demo role</label>
-        <select id="roleSelect">
-          <option value="tenant">Tenant</option>
-          <option value="agent">Agent</option>
-          <option value="landlord">Landlord</option>
-          <option value="admin">Admin</option>
-        </select>
+      <div class="profile-chip">
+        <span class="profile-copy">
+          <b>Femi Adebayo</b>
+          <small>NIN verified</small>
+        </span>
+        <span class="avatar">FA</span>
       </div>
     </header>
 
-    <main>
-      <section id="explore" class="hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Trust-first marketplace</p>
-          <h1>Find a home without gambling on the agent, title, or payment.</h1>
-          <p>Verified listings, escrow, NIN-linked reviews, Rent Monthly, and a clear trail of trust before you pay.</p>
-          <div class="search-panel" role="search">
-            <input id="searchInput" autocomplete="off" placeholder="Search Ikoyi, Lekki, Yaba, mini flat...">
-            <button id="searchBtn">Search</button>
-          </div>
-          <div class="trust-strip" aria-label="Awahouse trust indicators">
-            <span>LASRERA</span>
-            <span>SCUML</span>
-            <span>Title badge</span>
-            <span>3% escrow</span>
-          </div>
+    <main class="shell">
+      <section id="explore" class="screen explore-screen">
+        <div class="search-row">
+          <label class="search-pill">
+            <span class="icon" aria-hidden="true">⌕</span>
+            <input id="searchInput" placeholder="Search verified listings in Lagos" autocomplete="off">
+            <button id="filterButton" type="button" aria-label="Filters">☷</button>
+          </label>
+          <button class="primary compact" id="askAwaTop">Ask Awa</button>
         </div>
-        <aside class="hero-panel" aria-label="Current user">
-          <span class="status-pill">NIN verified</span>
-          <h2 id="welcomeName">Welcome home</h2>
-          <p id="welcomeMeta">Loading your verified marketplace.</p>
-          <dl>
-            <div><dt>Rent Score</dt><dd id="rentScore">---</dd></div>
-            <div><dt>Watchlist</dt><dd id="watchCount">0</dd></div>
-            <div><dt>Active plans</dt><dd id="rentPlans">0</dd></div>
-          </dl>
-        </aside>
-      </section>
 
-      <section class="section-head">
-        <div>
-          <p class="eyebrow">Verified inventory</p>
-          <h2>Listings ready for trust checks</h2>
+        <div class="chip-row" aria-label="Filters">
+          <button class="filter-chip active" data-filter="all">All Verified</button>
+          <button class="filter-chip" data-filter="title">Title Confirmed</button>
+          <button class="filter-chip" data-filter="monthly">Rent Monthly</button>
+          <button class="filter-chip" data-filter="serviced">Serviced Apartments</button>
+          <button class="filter-chip" data-filter="direct">Landlord Direct</button>
         </div>
-        <div class="filters" aria-label="Listing filters">
-          <button class="chip active" data-filter="">All</button>
-          <button class="chip" data-filter="verified">Title verified</button>
-          <button class="chip" data-filter="monthly">Rent Monthly</button>
-        </div>
-      </section>
-      <section id="listings" class="listing-grid" aria-live="polite"></section>
 
-      <section id="detail" class="detail-layout hidden" aria-live="polite"></section>
+        <section class="hero-grid">
+          <article class="welcome-panel">
+            <p class="overline">Welcome home,</p>
+            <h1>Find a safe home without fear.</h1>
+            <p class="lead">Every listing carries a visible trust trail: title status, verified agent or landlord, escrow eligibility, reviews, and Rent Monthly readiness.</p>
+            <div class="trust-metrics">
+              <div><b>4.9</b><span>Avg. agent score</span></div>
+              <div><b>3%</b><span>Escrow fee</span></div>
+              <div><b>48h</b><span>Hold window</span></div>
+            </div>
+          </article>
+          <aside class="rent-score-panel">
+            <span class="status-badge success">NIN Verified</span>
+            <h2>Rent Score</h2>
+            <div class="score-ring">
+              <strong>710</strong>
+              <span>Prime tenant</span>
+            </div>
+            <div class="mini-list">
+              <div><span>Next rent debit</span><b>18 days</b></div>
+              <div><span>Monthly plan</span><b>Active</b></div>
+              <div><span>Watchlist</span><b id="watchCount">1 saved</b></div>
+            </div>
+          </aside>
+        </section>
 
-      <section id="ask" class="workband">
-        <div>
-          <p class="eyebrow">Ask Awa</p>
-          <h2>One message, three verified options.</h2>
-          <p>Simulates the WhatsApp/NLP lead capture flow from the blueprint while storing the search as an audit event.</p>
-        </div>
-        <form id="askForm" class="stack-form">
-          <textarea name="query" rows="4" placeholder="I need a verified 2-bed in Lekki with escrow and monthly rent."></textarea>
-          <button type="submit">Ask Awa</button>
-        </form>
-        <div id="askResult" class="result-box"></div>
-      </section>
-
-      <section id="list" class="workband split">
-        <div>
-          <p class="eyebrow">Landlord and agent supply</p>
-          <h2>List a verified property.</h2>
-          <p>New listings enter pending review so title, ownership, LASRERA/SCUML, and landlord direct checks can happen before publishing.</p>
-        </div>
-        <form id="listingForm" class="stack-form">
-          <input name="title" placeholder="Property title" required maxlength="120">
-          <div class="form-row">
-            <input name="location" placeholder="Location" required maxlength="120">
-            <input name="lga" placeholder="LGA" required maxlength="80">
-          </div>
-          <div class="form-row">
-            <input name="price" inputmode="numeric" placeholder="Annual price in naira" required>
-            <select name="rentPeriod">
-              <option value="yearly">Yearly rent</option>
-              <option value="monthly">Monthly rent</option>
-              <option value="sale">Sale</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <input name="beds" type="number" min="0" max="20" placeholder="Beds" required>
-            <input name="baths" type="number" min="0" max="20" placeholder="Baths" required>
-            <input name="type" placeholder="Type" required maxlength="40">
-          </div>
-          <textarea name="description" rows="4" placeholder="Describe the home, disclosures, service charge, and access details." required maxlength="900"></textarea>
-          <input name="amenities" placeholder="Amenities, comma separated">
-          <button type="submit">Submit for review</button>
-        </form>
-      </section>
-
-      <section id="verify" class="workband split">
-        <div>
-          <p class="eyebrow">Trust verification center</p>
-          <h2>Submit NIN, LASRERA, SCUML, or title evidence.</h2>
-          <p>NIN values are masked before storage in this MVP. Production integrations should replace manual review with approved providers.</p>
-        </div>
-        <form id="verificationForm" class="stack-form">
-          <select name="kind">
-            <option value="nin">NIN consent</option>
-            <option value="lasrera">LASRERA registration</option>
-            <option value="scuml">SCUML compliance</option>
-            <option value="title">Title registry reference</option>
-            <option value="landlord_direct">Landlord direct ownership</option>
-          </select>
-          <input name="reference" placeholder="Reference number" required maxlength="120">
-          <button type="submit">Submit verification</button>
-        </form>
-      </section>
-
-      <section id="dashboard" class="dashboard">
-        <div class="section-head">
+        <section class="section-title">
           <div>
-            <p class="eyebrow">Operations</p>
-            <h2>Dashboard</h2>
+            <p class="overline">Verified listings near you</p>
+            <h2>Homes with title, identity, and payment protection.</h2>
           </div>
-          <button id="refreshDashboard" class="ghost">Refresh</button>
+          <a href="#property">View trust file</a>
+        </section>
+        <div id="listingRail" class="listing-rail" aria-live="polite"></div>
+
+        <section class="banner-grid">
+          <article class="feature-banner">
+            <div class="feature-icon">RM</div>
+            <div>
+              <p class="overline">Rent Monthly</p>
+              <h3>Move in without paying the full year upfront.</h3>
+              <p>Pay monthly, build Rent Score, and unlock mortgage pre-qualification after a consistent streak.</p>
+            </div>
+          </article>
+          <article class="feature-banner dark">
+            <div class="feature-icon">AA</div>
+            <div>
+              <p class="overline">Ask Awa</p>
+              <h3>One message returns three verified options.</h3>
+              <p>Designed for WhatsApp search and lead capture, with every answer restricted to trust-checked listings.</p>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <section id="property" class="screen property-screen"></section>
+
+      <section id="escrow" class="screen escrow-screen">
+        <div class="section-title">
+          <div>
+            <p class="overline">Awahouse Escrow</p>
+            <h2>Payment stays protected until both sides complete the move-in checks.</h2>
+          </div>
+          <span class="status-badge warn">4,500 credits</span>
         </div>
-        <div class="metric-grid">
-          <article><span>Listings</span><strong id="metricListings">0</strong></article>
-          <article><span>Rent Score</span><strong id="metricScore">0</strong></article>
-          <article><span>Rent Monthly</span><strong id="metricPlans">0</strong></article>
-          <article><span>Escrow states</span><strong id="metricEscrows">0</strong></article>
+        <div class="stepper">
+          <div class="done"><b>1</b><span>Verify</span></div>
+          <div class="active"><b>2</b><span>Escrow</span></div>
+          <div><b>3</b><span>Title Check</span></div>
+          <div><b>4</b><span>Move In</span></div>
+        </div>
+        <div class="escrow-layout">
+          <article class="escrow-summary">
+            <img src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=80" alt="Heritage Penthouse exterior">
+            <div>
+              <span class="status-badge success">Title Verified</span>
+              <h3>Heritage Penthouse, Ikoyi</h3>
+              <p>Escrow draft created for rent payment. Funds are held for 48-72 hours while tenant, agent, and Awahouse verification officer complete move-in checks.</p>
+              <dl class="receipt">
+                <div><dt>Rent amount</dt><dd>NGN 12,000,000</dd></div>
+                <div><dt>Awahouse fee</dt><dd>NGN 360,000</dd></div>
+                <div><dt>Total protected</dt><dd>NGN 12,360,000</dd></div>
+              </dl>
+            </div>
+          </article>
+          <aside class="process-card">
+            <h3>Release conditions</h3>
+            <ul class="check-list">
+              <li>Tenant confirms keys and access.</li>
+              <li>Agent confirms possession handover.</li>
+              <li>Title officer clears document pack.</li>
+              <li>Any dispute enters 4-hour SLA queue.</li>
+            </ul>
+            <button class="primary" type="button">Continue to secure payment</button>
+          </aside>
+        </div>
+      </section>
+
+      <section id="verification" class="screen verification-screen">
+        <div class="section-title">
+          <div>
+            <p class="overline">Trust verification center</p>
+            <h2>NIN, LASRERA, SCUML, title, and landlord-direct checks in one queue.</h2>
+          </div>
+          <span class="status-badge success">NDPR consent logged</span>
+        </div>
+        <div class="verification-grid">
+          <article><b>NIN</b><span>Verified</span><p>Identity matched to user account and consent record.</p></article>
+          <article><b>LASRERA</b><span>Pending officer review</span><p>Registration number submitted for manual cross-check.</p></article>
+          <article><b>SCUML</b><span>Compliant</span><p>AML baseline confirmed for verified agent badge.</p></article>
+          <article><b>Title</b><span>Registry verified</span><p>Reference visible on listing trust file.</p></article>
+        </div>
+      </section>
+
+      <section id="list-property" class="screen list-screen">
+        <div class="pro-layout">
+          <aside class="pro-sidebar">
+            <h2>Awahouse Pro</h2>
+            <span>Verified Partner</span>
+            <a class="active" href="#list-property">Property basics</a>
+            <a href="#verification">Trust verification</a>
+            <a href="#dashboard">Enquiries</a>
+            <a href="#escrow">Escrow controls</a>
+          </aside>
+          <form class="listing-form">
+            <p class="overline">List a property</p>
+            <h2>Submit inventory for Awahouse review.</h2>
+            <div class="form-grid">
+              <label>Property title<input value="Lekki Phase 1 Serviced Apartment"></label>
+              <label>Location<input value="Admiralty Way, Lekki"></label>
+              <label>Annual rent<input value="4,500,000"></label>
+              <label>Type<input value="Serviced apartment"></label>
+              <label>Bedrooms<input value="3"></label>
+              <label>Bathrooms<input value="3"></label>
+            </div>
+            <label>Description<textarea rows="5">Bright serviced apartment with verified agent, clean service charge history, escrow support, and Rent Monthly eligibility.</textarea></label>
+            <div class="publish-panel">
+              <div><b>Review status</b><span>Pending title officer approval before publishing.</span></div>
+              <button class="primary" type="button">Submit for review</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="dashboard" class="screen dashboard-screen">
+        <div class="section-title">
+          <div>
+            <p class="overline">Agent Hub</p>
+            <h2>Portfolio, leads, escrow, and reputation at a glance.</h2>
+          </div>
+          <button class="primary compact" type="button">Add New Listing</button>
+        </div>
+        <div class="stats-grid">
+          <article><span>Active Listings</span><b>24</b><small>+2 this week</small></article>
+          <article><span>Verified Leads</span><b>142</b><small>8 pending</small></article>
+          <article><span>Escrow GMV</span><b>NGN 86M</b><small>3 releases due</small></article>
+          <article><span>Review Score</span><b>4.9</b><small>128 reviews</small></article>
         </div>
         <div class="dashboard-grid">
           <section>
-            <h3>Leads</h3>
-            <div id="leadList" class="activity-list"></div>
-          </section>
-          <section>
-            <h3>Escrow</h3>
-            <div id="escrowList" class="activity-list"></div>
+            <h3>Hot enquiries</h3>
+            <div class="activity-card"><b>Femi Adebayo</b><span>Saturday viewing requested · Lekki Phase 1</span></div>
+            <div class="activity-card"><b>Chinwe Okafor</b><span>Asked for title pack · Old Ikoyi</span></div>
+            <div class="activity-card"><b>Daniel Musa</b><span>Rent Monthly eligibility check</span></div>
           </section>
           <section>
             <h3>Verification queue</h3>
-            <div id="verificationList" class="activity-list"></div>
+            <div class="activity-card"><b>LASRERA</b><span>1 agent credential pending</span></div>
+            <div class="activity-card"><b>Title Review</b><span>2 listings awaiting officer approval</span></div>
+            <div class="activity-card"><b>Landlord Direct</b><span>Ownership call scheduled</span></div>
+          </section>
+          <section>
+            <h3>Reviews</h3>
+            <div class="quote-card">“Clear title documents, fast viewing, and no hidden inspection fee.”</div>
+            <button class="secondary" type="button">Respond to review</button>
           </section>
         </div>
       </section>
     </main>
 
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <nav class="bottom-nav" aria-label="Mobile navigation">
+      <a href="#explore">Explore</a>
+      <a href="#property">Trust</a>
+      <a href="#escrow">Escrow</a>
+      <a href="#dashboard">Hub</a>
+    </nav>
+
     <script src="/app.js" defer></script>
   </body>
 </html>
-
