@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Awahouse MVP</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#explore" aria-label="Awahouse home">
+        <span class="brand-mark">A</span>
+        <span>
+          <strong>Awahouse</strong>
+          <small>Verified homes in Lagos</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#explore">Explore</a>
+        <a href="#ask">Ask Awa</a>
+        <a href="#list">List</a>
+        <a href="#dashboard">Dashboard</a>
+      </nav>
+      <div class="role-switcher">
+        <label for="roleSelect">Demo role</label>
+        <select id="roleSelect">
+          <option value="tenant">Tenant</option>
+          <option value="agent">Agent</option>
+          <option value="landlord">Landlord</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </header>
+
+    <main>
+      <section id="explore" class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Trust-first marketplace</p>
+          <h1>Find a home without gambling on the agent, title, or payment.</h1>
+          <p>Verified listings, escrow, NIN-linked reviews, Rent Monthly, and a clear trail of trust before you pay.</p>
+          <div class="search-panel" role="search">
+            <input id="searchInput" autocomplete="off" placeholder="Search Ikoyi, Lekki, Yaba, mini flat...">
+            <button id="searchBtn">Search</button>
+          </div>
+          <div class="trust-strip" aria-label="Awahouse trust indicators">
+            <span>LASRERA</span>
+            <span>SCUML</span>
+            <span>Title badge</span>
+            <span>3% escrow</span>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Current user">
+          <span class="status-pill">NIN verified</span>
+          <h2 id="welcomeName">Welcome home</h2>
+          <p id="welcomeMeta">Loading your verified marketplace.</p>
+          <dl>
+            <div><dt>Rent Score</dt><dd id="rentScore">---</dd></div>
+            <div><dt>Watchlist</dt><dd id="watchCount">0</dd></div>
+            <div><dt>Active plans</dt><dd id="rentPlans">0</dd></div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="section-head">
+        <div>
+          <p class="eyebrow">Verified inventory</p>
+          <h2>Listings ready for trust checks</h2>
+        </div>
+        <div class="filters" aria-label="Listing filters">
+          <button class="chip active" data-filter="">All</button>
+          <button class="chip" data-filter="verified">Title verified</button>
+          <button class="chip" data-filter="monthly">Rent Monthly</button>
+        </div>
+      </section>
+      <section id="listings" class="listing-grid" aria-live="polite"></section>
+
+      <section id="detail" class="detail-layout hidden" aria-live="polite"></section>
+
+      <section id="ask" class="workband">
+        <div>
+          <p class="eyebrow">Ask Awa</p>
+          <h2>One message, three verified options.</h2>
+          <p>Simulates the WhatsApp/NLP lead capture flow from the blueprint while storing the search as an audit event.</p>
+        </div>
+        <form id="askForm" class="stack-form">
+          <textarea name="query" rows="4" placeholder="I need a verified 2-bed in Lekki with escrow and monthly rent."></textarea>
+          <button type="submit">Ask Awa</button>
+        </form>
+        <div id="askResult" class="result-box"></div>
+      </section>
+
+      <section id="list" class="workband split">
+        <div>
+          <p class="eyebrow">Landlord and agent supply</p>
+          <h2>List a verified property.</h2>
+          <p>New listings enter pending review so title, ownership, LASRERA/SCUML, and landlord direct checks can happen before publishing.</p>
+        </div>
+        <form id="listingForm" class="stack-form">
+          <input name="title" placeholder="Property title" required maxlength="120">
+          <div class="form-row">
+            <input name="location" placeholder="Location" required maxlength="120">
+            <input name="lga" placeholder="LGA" required maxlength="80">
+          </div>
+          <div class="form-row">
+            <input name="price" inputmode="numeric" placeholder="Annual price in naira" required>
+            <select name="rentPeriod">
+              <option value="yearly">Yearly rent</option>
+              <option value="monthly">Monthly rent</option>
+              <option value="sale">Sale</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <input name="beds" type="number" min="0" max="20" placeholder="Beds" required>
+            <input name="baths" type="number" min="0" max="20" placeholder="Baths" required>
+            <input name="type" placeholder="Type" required maxlength="40">
+          </div>
+          <textarea name="description" rows="4" placeholder="Describe the home, disclosures, service charge, and access details." required maxlength="900"></textarea>
+          <input name="amenities" placeholder="Amenities, comma separated">
+          <button type="submit">Submit for review</button>
+        </form>
+      </section>
+
+      <section id="verify" class="workband split">
+        <div>
+          <p class="eyebrow">Trust verification center</p>
+          <h2>Submit NIN, LASRERA, SCUML, or title evidence.</h2>
+          <p>NIN values are masked before storage in this MVP. Production integrations should replace manual review with approved providers.</p>
+        </div>
+        <form id="verificationForm" class="stack-form">
+          <select name="kind">
+            <option value="nin">NIN consent</option>
+            <option value="lasrera">LASRERA registration</option>
+            <option value="scuml">SCUML compliance</option>
+            <option value="title">Title registry reference</option>
+            <option value="landlord_direct">Landlord direct ownership</option>
+          </select>
+          <input name="reference" placeholder="Reference number" required maxlength="120">
+          <button type="submit">Submit verification</button>
+        </form>
+      </section>
+
+      <section id="dashboard" class="dashboard">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Operations</p>
+            <h2>Dashboard</h2>
+          </div>
+          <button id="refreshDashboard" class="ghost">Refresh</button>
+        </div>
+        <div class="metric-grid">
+          <article><span>Listings</span><strong id="metricListings">0</strong></article>
+          <article><span>Rent Score</span><strong id="metricScore">0</strong></article>
+          <article><span>Rent Monthly</span><strong id="metricPlans">0</strong></article>
+          <article><span>Escrow states</span><strong id="metricEscrows">0</strong></article>
+        </div>
+        <div class="dashboard-grid">
+          <section>
+            <h3>Leads</h3>
+            <div id="leadList" class="activity-list"></div>
+          </section>
+          <section>
+            <h3>Escrow</h3>
+            <div id="escrowList" class="activity-list"></div>
+          </section>
+          <section>
+            <h3>Verification queue</h3>
+            <div id="verificationList" class="activity-list"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
+
