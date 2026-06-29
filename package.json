@@ -1,0 +1,14 @@
+{
+  "name": "awahouse-mvp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test:security": "node tests/security.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
+
