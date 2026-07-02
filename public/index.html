@@ -108,7 +108,9 @@ img { max-width: 100%; display: block; }
   width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
 }
-.screen { scroll-margin-top: 88px; padding: 24px 0 42px; }
+.screen { display: none; scroll-margin-top: 88px; padding: 24px 0 42px; }
+.screen.active { display: block; }
+.desktop-nav a.active, .bottom-nav a.active { color: var(--terra); background: var(--surface); }
 .auth-screen { padding-bottom: 12px; }
 .auth-grid {
   display: grid;
@@ -589,7 +591,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--terra); box-shad
         </div>
       </section>
 
-      <section id="explore" class="screen explore-screen">
+      <section id="explore" class="screen explore-screen active">
         <div class="search-row">
           <label class="search-pill">
             <span class="icon" aria-hidden="true">âŒ•</span>
@@ -819,4 +821,5 @@ input:focus, textarea:focus, select:focus { border-color: var(--terra); box-shad
     <script src="/app.js" defer></script>
   </body>
 </html>
+
 

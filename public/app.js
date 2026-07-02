@@ -123,6 +123,22 @@ function updateIdentity() {
   $("#auth-panel").classList.toggle("is-hidden", Boolean(state.profile));
 }
 
+function activeRoute() {
+  const id = (location.hash || "#explore").replace("#", "");
+  const allowed = new Set(["auth-panel", "explore", "property", "escrow", "verification", "list-property", "dashboard"]);
+  return allowed.has(id) ? id : "explore";
+}
+
+function renderRoute() {
+  const id = activeRoute();
+  document.querySelectorAll(".screen").forEach((screen) => {
+    screen.classList.toggle("active", screen.id === id);
+  });
+  document.querySelectorAll(".desktop-nav a, .bottom-nav a").forEach((link) => {
+    link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+  });
+}
+
 function normalizedListings() {
   return (state.listings.length ? state.listings : demoListings).map((item) => ({
     ...item,
@@ -259,6 +275,7 @@ async function bootstrap() {
   renderListings();
   renderProperty();
   renderDashboard();
+  renderRoute();
 }
 
 async function openProperty(id) {
@@ -436,4 +453,6 @@ document.addEventListener("submit", async (event) => {
   }
 });
 
+window.addEventListener("hashchange", renderRoute);
 bootstrap();
+renderRoute();
