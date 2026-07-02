@@ -24,14 +24,45 @@
       </nav>
       <div class="profile-chip">
         <span class="profile-copy">
-          <b>Femi Adebayo</b>
-          <small>NIN verified</small>
+          <b id="profileName">Guest</b>
+          <small id="profileStatus">Sign in for pilot access</small>
         </span>
-        <span class="avatar">FA</span>
+        <button class="avatar" id="authToggle" type="button">IN</button>
       </div>
     </header>
 
     <main class="shell">
+      <section id="auth-panel" class="screen auth-screen">
+        <div class="auth-grid">
+          <article class="auth-card">
+            <p class="overline">Real Pilot Access</p>
+            <h2>Create an Awahouse account.</h2>
+            <p class="meta">Tenants can save and enquire. Agents and landlords can submit listings for admin approval.</p>
+            <form id="signupForm" class="pilot-form">
+              <input name="full_name" placeholder="Full name" required>
+              <input name="email" type="email" placeholder="Email" required>
+              <input name="password" type="password" placeholder="Password" minlength="8" required>
+              <select name="role">
+                <option value="tenant">Tenant</option>
+                <option value="agent">Agent</option>
+                <option value="landlord">Landlord</option>
+              </select>
+              <button class="primary" type="submit">Create account</button>
+            </form>
+          </article>
+          <article class="auth-card">
+            <p class="overline">Already onboarded</p>
+            <h2>Sign in.</h2>
+            <form id="loginForm" class="pilot-form">
+              <input name="email" type="email" placeholder="Email" required>
+              <input name="password" type="password" placeholder="Password" required>
+              <button class="secondary" type="submit">Sign in</button>
+            </form>
+            <button id="googleLogin" class="secondary" type="button">Continue with Google</button>
+          </article>
+        </div>
+      </section>
+
       <section id="explore" class="screen explore-screen">
         <div class="search-row">
           <label class="search-pill">
@@ -62,7 +93,7 @@
             </div>
           </article>
           <aside class="rent-score-panel">
-            <span class="status-badge success">NIN Verified</span>
+          <span class="status-badge success">NIN Verified</span>
             <h2>Rent Score</h2>
             <div class="score-ring">
               <strong>710</strong>
@@ -162,6 +193,17 @@
           <article><b>SCUML</b><span>Compliant</span><p>AML baseline confirmed for verified agent badge.</p></article>
           <article><b>Title</b><span>Registry verified</span><p>Reference visible on listing trust file.</p></article>
         </div>
+        <form id="verificationForm" class="pilot-form inline-form">
+          <select name="kind">
+            <option value="nin">NIN consent</option>
+            <option value="lasrera">LASRERA registration</option>
+            <option value="scuml">SCUML compliance</option>
+            <option value="title">Title registry reference</option>
+            <option value="landlord_direct">Landlord direct ownership</option>
+          </select>
+          <input name="reference" placeholder="Reference number" required>
+          <button class="primary" type="submit">Submit manual verification</button>
+        </form>
       </section>
 
       <section id="list-property" class="screen list-screen">
@@ -174,21 +216,29 @@
             <a href="#dashboard">Enquiries</a>
             <a href="#escrow">Escrow controls</a>
           </aside>
-          <form class="listing-form">
+          <form id="listingForm" class="listing-form">
             <p class="overline">List a property</p>
             <h2>Submit inventory for Awahouse review.</h2>
             <div class="form-grid">
-              <label>Property title<input value="Lekki Phase 1 Serviced Apartment"></label>
-              <label>Location<input value="Admiralty Way, Lekki"></label>
-              <label>Annual rent<input value="4,500,000"></label>
-              <label>Type<input value="Serviced apartment"></label>
-              <label>Bedrooms<input value="3"></label>
-              <label>Bathrooms<input value="3"></label>
+              <label>Property title<input name="title" value="Lekki Phase 1 Serviced Apartment"></label>
+              <label>Location<input name="location" value="Admiralty Way, Lekki"></label>
+              <label>LGA<input name="lga" value="Eti-Osa"></label>
+              <label>Annual rent<input name="price" value="4500000"></label>
+              <label>Type<input name="property_type" value="Serviced apartment"></label>
+              <label>Bedrooms<input name="bedrooms" value="3"></label>
+              <label>Bathrooms<input name="bathrooms" value="3"></label>
+              <label>Period
+                <select name="rent_period">
+                  <option value="yearly">Yearly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="sale">Sale</option>
+                </select>
+              </label>
             </div>
-            <label>Description<textarea rows="5">Bright serviced apartment with verified agent, clean service charge history, escrow support, and Rent Monthly eligibility.</textarea></label>
+            <label>Description<textarea name="description" rows="5">Bright serviced apartment with verified agent, clean service charge history, escrow support, and Rent Monthly eligibility.</textarea></label>
             <div class="publish-panel">
               <div><b>Review status</b><span>Pending title officer approval before publishing.</span></div>
-              <button class="primary" type="button">Submit for review</button>
+              <button class="primary" type="submit">Submit for review</button>
             </div>
           </form>
         </div>
@@ -217,9 +267,11 @@
           </section>
           <section>
             <h3>Verification queue</h3>
-            <div class="activity-card"><b>LASRERA</b><span>1 agent credential pending</span></div>
-            <div class="activity-card"><b>Title Review</b><span>2 listings awaiting officer approval</span></div>
-            <div class="activity-card"><b>Landlord Direct</b><span>Ownership call scheduled</span></div>
+            <div id="approvalQueue">
+              <div class="activity-card"><b>LASRERA</b><span>1 agent credential pending</span></div>
+              <div class="activity-card"><b>Title Review</b><span>2 listings awaiting officer approval</span></div>
+              <div class="activity-card"><b>Landlord Direct</b><span>Ownership call scheduled</span></div>
+            </div>
           </section>
           <section>
             <h3>Reviews</h3>
@@ -237,6 +289,7 @@
       <a href="#dashboard">Hub</a>
     </nav>
 
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="/app.js" defer></script>
   </body>
 </html>

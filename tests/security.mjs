@@ -4,15 +4,28 @@ import { DatabaseSync } from "node:sqlite";
 import assert from "node:assert/strict";
 
 const proc = spawn(process.execPath, ["server.mjs"], { stdio: ["ignore", "pipe", "pipe"] });
-await new Promise((resolve) => setTimeout(resolve, 1200));
 
 async function req(path, options = {}) {
   const res = await fetch(`http://127.0.0.1:8000${path}`, options);
   return { status: res.status, headers: res.headers, body: await res.text() };
 }
 
+async function waitForServer() {
+  let lastError;
+  for (let i = 0; i < 30; i += 1) {
+    try {
+      const res = await req("/api/health");
+      if (res.status === 200) return res;
+    } catch (error) {
+      lastError = error;
+      await new Promise((resolve) => setTimeout(resolve, 300));
+    }
+  }
+  throw lastError || new Error("Server did not become ready");
+}
+
 try {
-  let res = await req("/api/health");
+  let res = await waitForServer();
   assert.equal(res.status, 200);
   assert.ok(res.headers.get("content-security-policy"));
   assert.equal(res.headers.get("x-frame-options"), "DENY");
@@ -48,4 +61,3 @@ try {
 } finally {
   proc.kill();
 }
-
