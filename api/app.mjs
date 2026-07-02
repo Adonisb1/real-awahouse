@@ -1,4 +1,4 @@
-import { audit, clean, ensureProfile, handleError, moneyKobo, newReference, query, readJson, requireAdmin, requireUser, send } from "./_lib.mjs";
+import { audit, clean, ensureProfile, handleError, migrate, moneyKobo, newReference, query, readJson, requireAdmin, requireUser, send } from "./_lib.mjs";
 
 function listingSelect() {
   return `select l.*, p.full_name owner_name, p.email owner_email, ap.display_name agent_name, ap.rating agent_rating, ap.association,
@@ -57,7 +57,14 @@ export default async function handler(req, res) {
     if (req.method === "GET" && action === "bootstrap") {
       let profile = null;
       try { profile = await requireUser(req); } catch {}
-      const listings = await publicListings(url.searchParams);
+      let listings;
+      try {
+        listings = await publicListings(url.searchParams);
+      } catch (error) {
+        if (error.code !== "42P01" && error.code !== "42704") throw error;
+        await migrate();
+        listings = await publicListings(url.searchParams);
+      }
       const dash = profile ? await dashboard(profile) : null;
       const watch = profile ? await query("select listing_id from public.watchlists where user_id = $1", [profile.id]) : { rows: [] };
       return send(res, 200, { profile, listings, dashboard: dash, watchlist: watch.rows.map((row) => row.listing_id) });
@@ -248,4 +255,3 @@ export default async function handler(req, res) {
     handleError(res, error);
   }
 }
-
