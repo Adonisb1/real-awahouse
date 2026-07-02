@@ -122,7 +122,8 @@ export async function requireUser(req) {
 export async function ensureProfile(user, overrides = {}) {
   const email = String(user.email || overrides.email || "").toLowerCase();
   const admin = adminEmails().has(email);
-  const role = admin ? "admin" : (overrides.role || "tenant");
+  const requestedRole = overrides.role || user.user_metadata?.role || "tenant";
+  const role = admin || !["tenant", "agent", "landlord", "admin"].includes(requestedRole) ? (admin ? "admin" : "tenant") : requestedRole;
   const fullName = overrides.full_name || user.user_metadata?.full_name || user.user_metadata?.name || email.split("@")[0];
   const result = await query(
     `insert into public.profiles (id, full_name, email, phone, role)
@@ -166,4 +167,3 @@ export function handleError(res, error) {
   console.error(error);
   send(res, error.status || 500, { error: error.status ? error.message : "Server error" });
 }
-
